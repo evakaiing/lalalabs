@@ -53,8 +53,8 @@ int convert_str_to_num(const char* str, int* res) {
 }
 
 
-enum return_code to_hex(unsigned int num, char* hex, int* ind) {
-    // один символ занимает 4 бита, в int 64 бит, 64\4 максимум 16 цифр потребуется для представления
+
+int to_hex(unsigned int num, char* hex, int* ind) {
 
 
     if (num == 0) {
@@ -110,10 +110,15 @@ int for_p(int num, int* f) {
 }
 
 
-int for_f(const int num, int* res) {
+int for_f(const int num, long* res) {
     if (num < 0) {
         return ERROR_INPUT;
+    } 
+    
+    if (num > 20) {
+        return ERROR_OVERFLOW;
     }
+
     if (num < 2) {
         *res = num;
     }
@@ -121,7 +126,7 @@ int for_f(const int num, int* res) {
         *res *= i;
     }
 
-    if (*res == INT_MAX) {
+    if (*res >= INT_MAX) {
         return ERROR_OVERFLOW;
     }
 

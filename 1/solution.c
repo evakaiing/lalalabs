@@ -50,7 +50,7 @@ int main(int argc, char* argv[]) {
                 printf("\n");
                 break;
             case 'f':
-                int res_f = 1;
+                long res_f = 1;
                 enum return_code rc_f = for_f(num, &res_f);
 
                 if (rc_f == ERROR_INPUT) {
@@ -61,7 +61,7 @@ int main(int argc, char* argv[]) {
                     return ERROR_OVERFLOW;
                 }
 
-                printf("%d\n", res_f);
+                printf("%ld\n", res_f);
 
                 printf("\n");
                 break;
@@ -96,7 +96,7 @@ int main(int argc, char* argv[]) {
                 int** nums;
                 enum return_code rc_e = for_e(num, &nums);
                 if (rc_e == ERROR_INPUT) {
-                    printf("Nenado takogo pisat pg, bro\n");
+                    printf("Error input, bro\n");
                     return ERROR_INPUT;
                 } else if (rc_e == ERROR_MEMORY) {
                     printf("Error in memory allocation :(");
@@ -117,7 +117,7 @@ int main(int argc, char* argv[]) {
 
                 break;
             default:    
-                printf("Incorrect input, bye bitch");
+                printf("Incorrect input");
         }  
     } else {
         printf("Invalid input, invalid\n");
