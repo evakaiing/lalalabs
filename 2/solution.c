@@ -1,28 +1,29 @@
 #include <stdio.h>
-#include "functions.h"
 #include "realization.c"
 
 
+
 int main(int argc, char* argv[]) {
-    double eps = 1e-12;
-    // double res = calculate_e_using_limit(eps);
+    if (argc > 2) {
+        printf("Too much arguments\n");
+        return ERROR_INPUT;
+    } else if (argc < 2) {
+        printf("Too few arguments\n");
+        return ERROR_INPUT;
+    }
+    double eps;
+    if (convert_str_to_double_for_eps(argv[1], &eps) == ERROR_OVERFLOW) {
+        printf("Overflow, bro\n");
+        return ERROR_OVERFLOW;
+    } else if (convert_str_to_double_for_eps(argv[1], &eps) == ERROR_INPUT) {
+        printf("Incorret numbers :(\n");
+        return ERROR_INPUT;
+    }
 
-    // printf("%lf\n", res);
-
-    printf("e %lf\n", calculate_e_using_limit(eps));
-    printf("pi %lf\n", calculate_pi_using_limit(eps));
-    printf("ln %lf\n", calculate_ln_using_limit(eps));
-    printf("ln %lf\n", calculate_ln_using_limit(eps));
-    printf("sqrt %lf\n", calculate_sqrt_using_limit(eps));
-    printf("gamma %lf\n", calculate_gamma_using_limit(eps));
-    // printf("pi %lf\n", calculate_pi_using_row(eps));
-    // printf("ln %lf\n", calculate_ln_using_row(eps));
-    // printf("sqrt %lf\n", calculate_sqrt_using_row(eps));
-    // printf("gamma %lf\n", calculate_gamma_using_row(eps));
-    // printf("e %lf\n", calculate_e_using_equation(eps));
-    // printf("pi %lf\n", calculate_pi_using_equation(eps));
-    // printf("ln %lf\n", calculate_ln_using_equation(eps));
-    // printf("sqrt %lf\n", calculate_sqrt_using_equation(eps));
-    // printf("gamma %lf\n", calculate_gamma_using_equation(eps));
+    double results[15];
+    get_results(eps, results);
+    print_results(results);
+    
+    
     return 0;
 }
