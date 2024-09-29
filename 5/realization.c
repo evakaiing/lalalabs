@@ -15,11 +15,6 @@ int convert_str_to_double(const char* str, double* res, const double eps) {
         return ERROR_OVERFLOW;
     }
 
-    if (fabs(tmp) < DBL_MIN && tmp != 0) {
-        return ERROR_UNDERFLOW;
-    }
-
-
     *res = (double)tmp;
 
     return OK;
@@ -37,10 +32,6 @@ int convert_str_to_double_for_eps(const char* str, double* res) {
 
     if (fabs(tmp) > DBL_MAX) {
         return ERROR_OVERFLOW;
-    }
-
-    if (fabs(tmp) < DBL_MIN && tmp != 0) {
-        return ERROR_UNDERFLOW;
     }
 
     *res = (double)tmp;
@@ -115,7 +106,9 @@ int for_c(double eps, double x, double* res) {
     double current = 0;
     double to_add = 1;
     int n = 0;
-
+    if(fabs(x) >= 1) {
+        return ERROR_INPUT;
+    }
 
     while(fabs(to_add) > eps) {
         if (there_is_overflow(current) || there_is_overflow(to_add)) {
@@ -137,15 +130,16 @@ int for_d(double eps, double x, double* res) {
     double current = 0;
     double to_add = -x * x / 2;
     int n = 1;
-    
+    if (fabs(x) >= 1) {
+        return ERROR_INPUT;
+    }
     while(fabs(to_add) > eps) {
         if (there_is_overflow(current) || there_is_overflow(to_add)) {
             return ERROR_OVERFLOW;
         }
         current += to_add;
-
-        to_add *= x * x * (2 * n + 1);
-        to_add /= (2 * n + 2);
+        to_add *= -1 * x * x * (2 * n - 1); // fixed
+        to_add /= (2 * n);
 
         ++n;
     }

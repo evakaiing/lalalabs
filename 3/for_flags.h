@@ -67,7 +67,7 @@ int convert_str_to_double_for_eps(const char* str, double* res) {
         return ERROR_OVERFLOW;
     }
 
-    if (fabs(tmp) < DBL_MIN && tmp != 0) {
+    if (fabs(tmp) < DBL_MIN  && tmp != 0) {
         return ERROR_UNDERFLOW;
     }
 
@@ -91,7 +91,7 @@ int convert_str_to_double(const char* str, double* res, const double eps) {
         return ERROR_OVERFLOW;
     }
 
-    if (fabs(tmp) < DBL_MIN && tmp != 0) {
+    if (fabs(tmp) < DBL_MIN + eps && tmp != 0) {
         return ERROR_UNDERFLOW;
     }
 
@@ -140,15 +140,19 @@ int solve_quadratic_equation(double coefficent1,
     if (fabs(coefficent1) < eps) {
         if (fabs(coefficent2) < eps) {
             if (fabs(coefficent3) < eps) {   
-                return ERROR_INPUT; // 0 = 0
+                return ERROR_INPUT; 
             } else {
-                return ERROR_INPUT; // 5 != 0
+                return ERROR_INPUT; 
             }
         } else {
-            *ans1 = -coefficent3 / coefficent2;
+            *ans1 = 0; // fixed
             *count_of_answers = 1;
             return OK;
         }
+    } else {
+        *ans1 = 0; // fixed
+        *count_of_answers = 1;
+        return OK;
     }
 
     double discriminant = coefficent2 * coefficent2 - 4 * coefficent1 * coefficent3;
@@ -157,6 +161,7 @@ int solve_quadratic_equation(double coefficent1,
     }
 
     if (fabs(discriminant) < eps) {
+        printf("IM HERE\n");
         *ans1 = -coefficent2 / (2 * coefficent1);
         *count_of_answers = 1;
     } else if (discriminant > 0) {
@@ -179,7 +184,7 @@ void print_answers(int* count_of_answers, double* ans1, double* ans2) {
         printf("The first solution - %lf, the second - %lf\n", *ans1, *ans2);
         printf("\n");       
     } else {
-        printf("Infifnite solutions\n");
+        printf("No solutions\n");
         printf("\n");
     }
 }
@@ -229,8 +234,8 @@ int for_q(const double eps, const double coefficent1,
                                               &count_of_answers);
 
             if (rc != OK) {
-                return rc;
-            } else {
+                continue; // fixed
+            } else { 
                 printf("Solutions for coefficents: %lf %lf %lf\n", current_permutation[0], current_permutation[1], current_permutation[2]);
                 print_answers(&count_of_answers, &first_solution, &second_solution);
             }
@@ -261,7 +266,6 @@ int for_t(const double eps,
             const double coefficent2, 
             const double coefficent3, 
             int* ans) {
-    // eps? 
     if (there_is_overflow(coefficent1, coefficent1, eps) || there_is_overflow(coefficent2, coefficent2, eps) || there_is_overflow(coefficent3, coefficent3, eps)) {
         return ERROR_OVERFLOW;
     }
@@ -278,7 +282,7 @@ int for_t(const double eps,
     if (sum > DBL_MAX - eps) {
         return ERROR_OVERFLOW;
     }
-    if (fabs(hypotenuse - sum) <= eps) {
+    if (fabs(hypotenuse * hypotenuse - sum) <= eps) { // fixed
         *ans = 1;
     }
     return OK;

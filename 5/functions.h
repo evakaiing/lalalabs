@@ -7,7 +7,6 @@ enum return_code {
     OK,
     ERROR_INPUT,
     ERROR_OVERFLOW,
-    ERROR_UNDERFLOW
 };
 
 int convert_str_to_double(const char* str, double* res, const double eps);

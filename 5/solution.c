@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "functions.h"
+#include "realization.c"
 
 
 int main(int argc, char* argv[]) {
@@ -14,7 +14,7 @@ int main(int argc, char* argv[]) {
         return ERROR_INPUT;
     } 
     
-    if (convert_str_to_double(argv[1], &x, eps) == ERROR_OVERFLOW || convert_str_to_double_for_eps(argv[2], &eps) == ERROR_UNDERFLOW) {
+    if (convert_str_to_double(argv[1], &x, eps) == ERROR_OVERFLOW || convert_str_to_double_for_eps(argv[2], &eps) == ERROR_OVERFLOW) {
         printf("Overflow, underflow\n");
         return ERROR_OVERFLOW;
     } else if (convert_str_to_double(argv[1], &x, eps) == ERROR_INPUT || convert_str_to_double_for_eps(argv[2], &eps) == ERROR_INPUT) {
@@ -40,6 +40,8 @@ int main(int argc, char* argv[]) {
     enum return_code rc_c = for_c(eps, x, &res_c);
     if (rc_c == ERROR_OVERFLOW) {
         printf("c inf \n");
+    } else if(rc_c == ERROR_INPUT) {
+        printf("Ряд расходится при x >= 1\n");
     } else {
         printf("c %lf\n", res_c);
     }
@@ -47,7 +49,10 @@ int main(int argc, char* argv[]) {
     enum return_code rc_d = for_d(eps, x, &res_d);
     if (rc_d == ERROR_OVERFLOW) {
         printf("d inf \n");
-    } else {
+    } else if (rc_d == ERROR_INPUT) {
+        printf("Ряд расходится при х >= 1\n");
+    }
+    else {
         printf("d %lf\n", res_d);
     }
 
