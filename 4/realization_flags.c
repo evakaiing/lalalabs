@@ -12,7 +12,7 @@ char* reverse_gorner_scheme(int ascii_code, int base_to, char* buf) {
     }
     *p_buf-- = '\0';
     while(ascii_code > 0) {
-        *p_buf-- = ((remainder = ascii_code % base_to) > 10) ? remainder + 'A' - 10 : remainder + '0';
+        *p_buf-- = ((remainder = ascii_code % base_to) > 9) ? remainder + 'A' - 10 : remainder + '0';
         ascii_code /= base_to;
     }
     return p_buf + 1;
