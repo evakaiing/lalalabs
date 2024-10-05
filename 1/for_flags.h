@@ -54,8 +54,9 @@ int convert_str_to_num(const char* str, int* res) {
 
 
 
-int to_hex(unsigned int num, char* hex, int* ind) {
-
+int to_hex(int num, char* hex, int* ind, int* sign) {
+    *sign = num < 0 ? -1 : 1;
+    num *= *sign;
 
     if (num == 0) {
         hex[(*ind)++] = '0';
@@ -148,24 +149,23 @@ int for_a(const int num, int* res) {
     return OK;
 }
 
-int for_s(int num, char* hex, int* ind) {
-    unsigned int unsigned_num = (unsigned int)num;
-    enum return_code rc = to_hex(unsigned_num, hex, ind);
+int for_s(int num, char* hex, int* ind, int* sign) {
+    enum return_code rc = to_hex(num, hex, ind, sign);
 }
 
-int for_e(const int num, int*** nums) {
+int for_e(const int num, size_t*** nums) {
 
     if (num > 10 || num <= 0) {
         return ERROR_INPUT;
     }
-    *nums = (int**)malloc(10 * sizeof(int*));
+    *nums = (size_t**)malloc(10 * sizeof(size_t*));
 
     if (*nums == NULL) {
         return ERROR_MEMORY;
     }
 
     for (int i = 0; i < 10; ++i) {
-        (*nums)[i] = (int*)malloc(num * sizeof(int));
+        (*nums)[i] = (size_t*)malloc(num * sizeof(size_t));
         if ((*nums)[i] == NULL) {
             for (int j = 0; j < i; ++j) {
                 free(nums[i]);
@@ -180,3 +180,4 @@ int for_e(const int num, int*** nums) {
         }
     }      
 }
+
