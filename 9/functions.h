@@ -24,13 +24,13 @@ typedef enum return_code
 return_code convert_str_to_int(const char* str, int* res);
 return_code fill_static_array(int* static_array, int right_border, int left_border);
 return_code swap_min_and_max(int* static_array);
-return_code fill_dynamic_array(int* dynamic_array, int size_of_array);
-return_code get_C(int* array_A, int* array_B, int* array_C, const int size_of_array);
-int find_closest_value(int value, int* array_B, int size_of_array);
+return_code fill_dynamic_array(int* dynamic_array, int* size_of_array);
+return_code get_C(int* array_A, int* array_B, int* array_C, int* size_of_array);
+int find_closest_value(int value, int* array_B, int* size_of_array);
 
 void print_array(const int static_array[SIZE_OF_STATIC_ARRAY]);
 return_code for_first(int array[SIZE_OF_STATIC_ARRAY], int right_border, int left_border);
-return_code for_second(int* dynamic_array_A, int* dynamic_array_B, int* dynamic_array_C);
+return_code for_second(int* dynamic_array_A, int* dynamic_array_B, int* dynamic_array_C, int* size_of_dynamic_array);
 
 
 #endif
