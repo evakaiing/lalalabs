@@ -13,7 +13,6 @@ int main(int argc, char* argv[]) {
     char* first_arg = argv[1];
     int base;
 
-    // sscanf(argv[1], "%d", &base);
     return_code conversion_code = convert_str_to_num(first_arg, &base);
 
     if (conversion_code == ERROR_INPUT) {
@@ -77,8 +76,10 @@ int main(int argc, char* argv[]) {
         }
     }
     printf("\n");
+    
     char* max_number_in_start_base = reverse_gorner_scheme(max_number, base, buf_for_convert_max_number);
     printf("%s\n", max_number_in_start_base);
+
     for (int i = 0; i <= 3; ++i) {
         char* num = reverse_gorner_scheme(max_number, number_systems[i], buf);
         printf("%s ", num);
