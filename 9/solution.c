@@ -17,7 +17,7 @@ int main(int argc, char* argv[]) {
     int* dynamic_array_A = NULL;
     int* dynamic_array_B = NULL;
     int* dynamic_array_C = NULL;
-    int* size_of_dynamic_array = 0;
+    int size_of_dynamic_array = 0;
 
 
     return_code status_convertation_of_arg1 = convert_str_to_int(argv[1], &right_border);
@@ -35,5 +35,5 @@ int main(int argc, char* argv[]) {
 
     srand(time(NULL));
     for_first(static_array, right_border, left_border);
-    for_second(dynamic_array_A, dynamic_array_B, dynamic_array_C);
+    for_second(dynamic_array_A, dynamic_array_B, dynamic_array_C, &size_of_dynamic_array);
 }

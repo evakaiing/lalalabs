@@ -65,6 +65,14 @@ void print_array(const int static_array[SIZE_OF_STATIC_ARRAY]) {
     printf("\n");
 }
 
+void print_dynamic_array(const int* array, const int* size_of_array) {
+    for (int i = 0; i < *size_of_array; ++i) {
+        printf("%d ", array[i]);
+    }
+    printf("\n");
+}
+
+
 return_code for_first(int array[SIZE_OF_STATIC_ARRAY], int right_border, int left_border) {
     fill_static_array(array, right_border, left_border);
     printf("Original array\n");
@@ -78,21 +86,21 @@ return_code for_first(int array[SIZE_OF_STATIC_ARRAY], int right_border, int lef
     return OK;
 }
 
-return_code for_second(int* dynamic_array_A, int* dynamic_array_B, int* dynamic_array_C) {
-    int size_of_array = LEFT_BOARD_SIZE_OF_DYMANIC_ARRAY + rand() % RIGHT_BOARD_SIZE_OF_DYMANIC_ARRAY;
+return_code for_second(int* dynamic_array_A, int* dynamic_array_B, int* dynamic_array_C, int* size_of_array) {
+    *size_of_array = LEFT_BOARD_SIZE_OF_DYMANIC_ARRAY + rand() % RIGHT_BOARD_SIZE_OF_DYMANIC_ARRAY;
 
-    dynamic_array_A = (int*)malloc(sizeof(int) * size_of_array);
+    dynamic_array_A = (int*)malloc(sizeof(int) * (*size_of_array));
     if (!dynamic_array_A) {
         return ERROR_MEMORY;
     }
 
-    dynamic_array_B = (int*)malloc(sizeof(int) * size_of_array);
+    dynamic_array_B = (int*)malloc(sizeof(int) * (*size_of_array));
     if (!dynamic_array_B) {
         free(dynamic_array_A);
         return ERROR_MEMORY;
     }
 
-    dynamic_array_C = (int*)malloc(sizeof(int) * size_of_array);
+    dynamic_array_C = (int*)malloc(sizeof(int) * (*size_of_array));
     if (!dynamic_array_C) {
         free(dynamic_array_A);
         free(dynamic_array_B);
@@ -105,46 +113,78 @@ return_code for_second(int* dynamic_array_A, int* dynamic_array_B, int* dynamic_
     get_C(dynamic_array_A, dynamic_array_B, dynamic_array_C, size_of_array);
 
     printf("Array A\n");
-    print_array(dynamic_array_A);
+    print_dynamic_array(dynamic_array_A, size_of_array);
     printf("\n");
 
     printf("Array B\n");
-    print_array(dynamic_array_B);
+    print_dynamic_array(dynamic_array_B, size_of_array);
     printf("\n");
 
     printf("Array C\n");
-    print_array(dynamic_array_C);
+    print_dynamic_array(dynamic_array_C, size_of_array);
     printf("\n");
 
+    free(dynamic_array_A);
+    free(dynamic_array_B);
+    free(dynamic_array_C);
     return OK;
 }
 
-return_code fill_dynamic_array(int* dynamic_array, int size_of_array) {
-    for (int i = 0; i < size_of_array; ++i) {
+return_code fill_dynamic_array(int* dynamic_array, int* size_of_array) {
+    for (int i = 0; i < (*size_of_array); ++i) {
         dynamic_array[i] = MIN_AMOUNG_DYNAMIC_ARRAY + rand() % MAX_AMOUNG_DYNAMIC_ARRAY;
     }
 
     return OK;
 }
 
-return_code get_C(int* array_A, int* array_B, int* array_C, const int size_of_array) {
-    for (int i = 0; i < size_of_array; ++i) {
+int compare(const void* a, const void* b) {
+    int int_a = *(const int*)a;
+    int int_b = *(const int*)b;
+
+    return (int_a - int_b);
+}
+
+return_code get_C(int* array_A, int* array_B, int* array_C, int* size_of_array) {
+    qsort(array_B, *size_of_array, sizeof(int), compare);
+    for (int i = 0; i < (*size_of_array); ++i) {
         array_C[i] = array_A[i] + find_closest_value(array_A[i], array_B, size_of_array);
     }
 
     return OK;
 }
 
-int find_closest_value(int value, int* array_B, const int size_of_array) {
-    int min_difference = INT_MAX;
-    int ind = 0;
 
-    for (int i = 0; i < size_of_array; ++i) {
-        if (abs(array_B[i] - value) < min_difference) {
-            min_difference = abs(array_B[i] - value);
-            ind = i;
+int find_closest_value(int value, int* array, int* size_of_array) {
+    int left = 0;
+    int right = (*size_of_array) - 1;
+
+    if (value <= array[left]) {
+        return array[left];
+    }
+
+    if (value >= array[right]) {
+        return array[right];
+    }
+
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+
+        if (array[mid] == value) {
+            return array[mid];
+        }
+
+        if (array[mid] > value) {
+            right = mid - 1;
+        } else {
+            left = mid + 1;
         }
     }
 
-    return array_B[ind];
+    if ((array[left] - value) < (value - array[right])) {
+        return array[left];
+    } else {
+        return array[right];
+    }
+
 }
