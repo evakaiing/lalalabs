@@ -1,4 +1,5 @@
 #include "functions.h"
+#include "proccessing_file_paths.c"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -33,7 +34,23 @@ int main(int argc, char* argv[]) {
             int cnt_of_lexems_file1 = 0;
             int cnt_of_lexems_file2 = 0;
 
-            if (strcmp(file1_path, file2_path) == 0) {
+            char path_to_current_directory[PATH_MAX];
+            char absolute_path_file2[PATH_MAX];
+            char absolute_path_file1[PATH_MAX];
+            char absolute_output_path[PATH_MAX];
+
+            get_path_to_current_directory(path_to_current_directory);
+
+            convert_path_to_absolute(path_to_current_directory, file1_path, absolute_path_file1);
+
+            convert_path_to_absolute(path_to_current_directory, file2_path, absolute_path_file2);
+
+            convert_path_to_absolute(path_to_current_directory, output_file_path, absolute_output_path);
+
+
+            if ((strcmp(absolute_path_file1, absolute_path_file2) == 0) ||
+                strcmp(absolute_path_file1, absolute_output_path) == 0 || 
+                strcmp(absolute_path_file2, absolute_output_path) == 0) {
                 printf("The same file\n");
                 return INVALID_INPUT;
             }
@@ -103,6 +120,25 @@ int main(int argc, char* argv[]) {
 
             char* lexems[BUFSIZ];
             int cnt_of_lexems = 0;
+
+            char path_to_current_directory_a[PATH_MAX];
+            char absolute_path_file[PATH_MAX];
+            char absolute_output_path_a[PATH_MAX];
+
+            get_path_to_current_directory(path_to_current_directory_a);
+
+            convert_path_to_absolute(path_to_current_directory_a, path_to_input_file, absolute_path_file);
+
+            convert_path_to_absolute(path_to_current_directory_a, path_to_output_file, absolute_output_path_a);
+            printf("%s ", absolute_path_file);
+            printf("%s ", absolute_output_path_a);
+
+
+            if (strcmp(absolute_path_file, absolute_output_path_a) == 0) {
+                printf("The same file\n");
+                return INVALID_INPUT;
+            }
+
 
             if ((input_file = fopen(path_to_input_file, "r")) == NULL) {
                 printf("Couldn't open input file\n");

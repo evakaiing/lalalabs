@@ -22,7 +22,7 @@ return_code is_valid_flag(const char* flag) {
 
 void decimal_to_base(int n, int base, char* result) {
     const char digits[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    char buffer[65]; // Максимально необходимо для 64-битного числа
+    char buffer[65];
     int index = 0;
 
     do {
@@ -138,7 +138,7 @@ return_code for_a(char** lexems, FILE* output_file) {
     int number_of_current_lexem = 1;
     while(lexems[number_of_current_lexem] != NULL) {
         char* current_lexem = lexems[number_of_current_lexem - 1];
-        if (number_of_current_lexem % 10 == 0) { // numeration start with 0
+        if (number_of_current_lexem % 10 == 0) { 
             int length_of_lexem = strlen(current_lexem);
             for (int i = 0; i < length_of_lexem; ++i) {
                 char current_symbol = current_lexem[i];
