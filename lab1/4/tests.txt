@@ -1,0 +1,6 @@
+./a.out -na /mnt/c/Users/huawei/Desktop/3_сем/labs/lalalabs/4/input_a.txt /mnt/c/Users/huawei/Desktop/3_сем/labs/lalalabs/4/output.txt
+./a.out -a /mnt/c/Users/huawei/Desktop/3_сем/labs/lalalabs/4/input_a.txt
+
+
+все цифры в исходном
+./a.out -d input_a.txt
