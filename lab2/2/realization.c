@@ -20,6 +20,9 @@ return_code calculate_geometric_average(double* result, int count_of_values, ...
     for (i = 0; i < count_of_values; ++i) {
         double value;
         value = va_arg(list_of_values, double);
+        if (value < 0) {
+            return INVALID_INPUT;
+        }
         *result *= value;
         if (there_is_overflow(*result)) return OVERFLOW_ERROR;
     }
