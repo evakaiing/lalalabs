@@ -28,6 +28,7 @@ int main(int argc, char* argv[]) {
     }
 
     if (!strcmp(absolute_path_1, absolute_path_2)) {
+        printf("The same paths\n");
         return INVALID_INPUT;
     }
 

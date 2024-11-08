@@ -23,7 +23,7 @@ return_code convert_to_base(int num, int r, int* size, char** ans) {
 
     if (!ans) {
         return DEREFERENCING_NULL_POINTER_ATTEMPT;
-    }
+    }   
 
     *ans = (char*)malloc(cap);
 
