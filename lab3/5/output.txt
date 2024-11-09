@@ -1,0 +1,5 @@
+ID: 54
+ФИО: kek lol 211
+average: 2.800000
+best students:
+name: masha krev, group: 200, average grade: 23.80
