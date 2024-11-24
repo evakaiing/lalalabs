@@ -1,0 +1,4 @@
+/mnt/c/Users/huawei/Desktop/3_сем/labs/lalalabs/Lab5/6/build/CMakeFiles/VectorTest.dir
+/mnt/c/Users/huawei/Desktop/3_сем/labs/lalalabs/Lab5/6/build/CMakeFiles/valgrind_check.dir
+/mnt/c/Users/huawei/Desktop/3_сем/labs/lalalabs/Lab5/6/build/CMakeFiles/edit_cache.dir
+/mnt/c/Users/huawei/Desktop/3_сем/labs/lalalabs/Lab5/6/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/VectorTest.dir/unit.cpp.o -o VectorTest  /usr/lib/x86_64-linux-gnu/libgtest.a -lpthread 
