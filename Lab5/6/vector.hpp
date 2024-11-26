@@ -29,10 +29,23 @@ private:
         VectorIterator operator++(int);
         VectorIterator& operator--();
         VectorIterator operator--(int);
-        VectorIterator& operator+=(const difference_type& other) noexcept;
-        VectorIterator& operator-=(const difference_type& other) noexcept;
-        VectorIterator operator+(const difference_type& other) const noexcept;
-        VectorIterator operator-(const difference_type& other) const noexcept;
+        VectorIterator& operator+=(const difference_type& other);
+        VectorIterator& operator-=(const difference_type& other);
+        VectorIterator operator+(const difference_type& other) const;
+        VectorIterator operator-(const difference_type& other) const;
+
+        difference_type operator-(const VectorIterator& other) const;
+        reference_type operator[](const difference_type& index) const;
+
+        bool operator==(const VectorIterator& other) const;
+        bool operator!=(const VectorIterator& other) const;
+        bool operator<(const VectorIterator& other) const;
+        bool operator<=(const VectorIterator& other) const;
+        bool operator>(const VectorIterator& other) const;
+        bool operator>=(const VectorIterator& other) const;
+
+
+        // == != < <= > >= * -> []
 
     private:
         explicit VectorIterator(T* ptr) : ptr_(ptr) {}
@@ -46,9 +59,9 @@ public:
     explicit Vector(size_t count);
     Vector(size_t count, const T& value);
     Vector(const Vector& other);
-    Vector(Vector&& other) noexcept;
+    Vector(Vector&& other);
     Vector& operator=(const Vector& other);
-    Vector& operator=(Vector&& other) noexcept;
+    Vector& operator=(Vector&& other);
     Vector(std::initializer_list<T> init);
     ~Vector();
 
@@ -57,15 +70,19 @@ public:
     T& at(size_t index);
     const T& at(size_t index) const;
     T& operator[](size_t pos);
-    T& front() const noexcept;
-    T& back() const noexcept;
-    T* data() const noexcept;
-    bool empty() const noexcept;
-    size_t size() const noexcept;
-    size_t capacity() const noexcept;
+    const T& operator[](size_t pos) const;
+    T& front();
+    const T& front() const;
+    T& back()t;
+    const T& back() const;
+    T* data();
+    const T* data() const;
+    bool empty() const;
+    size_t size() const;
+    size_t capacity() const;
     void shrink_to_fit();
     void reserve(size_t new_cap);
-    void clear() noexcept;
+    void clear();
     void insert(size_t pos, T value);
     void erase(size_t begin_pos, size_t end_pos);
     void push_back(const T& value);

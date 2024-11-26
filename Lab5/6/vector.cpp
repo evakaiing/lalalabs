@@ -59,26 +59,41 @@ private:
             return copy;
         }
 
-        VectorIterator& operator+=(const difference_type& other) noexcept {
+        VectorIterator& operator+=(const difference_type& other) {
             ptr_ += other;
             return *this;
         }
 
-        VectorIterator& operator-=(const difference_type& other) noexcept {
+        VectorIterator& operator-=(const difference_type& other) {
             ptr_ -= other;
             return *this;
         }
 
-        VectorIterator operator-(const difference_type& other) const noexcept {
+        VectorIterator operator-(const difference_type& other) const {
             return (VectorIterator(ptr_ - other));
         }
 
-        VectorIterator operator+(const difference_type& other) const noexcept {
+        VectorIterator operator+(const difference_type& other) const {
             return (VectorIterator(ptr_ + other));
         }
 
+         difference_type operator-(const VectorIterator& other) const {
+            return ptr_ - other.ptr_;
+        }
+
+        reference_type operator[](const difference_type& index) const {
+            return *(ptr_ + index);
+        }
+
+        bool operator==(const VectorIterator& other) const { return ptr_ == other.ptr_; }
+        bool operator!=(const VectorIterator& other) const { return ptr_ != other.ptr_; }
+        bool operator<(const VectorIterator& other) const { return ptr_ < other.ptr_; }
+        bool operator<=(const VectorIterator& other) const { return ptr_ <= other.ptr_; }
+        bool operator>(const VectorIterator& other) const { return ptr_ > other.ptr_; }
+        bool operator>=(const VectorIterator& other) const { return ptr_ >= other.ptr_; }
+
     private:
-        T* ptr_;
+        pointer_type ptr_;
         explicit VectorIterator(T* ptr) : ptr_(ptr) {}
     };
 
@@ -172,27 +187,45 @@ public:
         return arr_[pos];
     }
 
-    T& front() const noexcept {
+    const T& operator[](size_t pos) const {
+        return arr_[pos];
+    }
+
+
+    T& front() {
         return arr_[0];
     }
 
-    T& back() const noexcept {
+    const T& front() const {
+        return arr_[0];
+    }
+
+    T& back() {
         return arr_[size_ - 1];
     }
 
-    T* data() const noexcept {
+    const T& back() const {
+        return arr_[size_ - 1];
+    }
+
+
+    T* data() {
         return arr_;
     }
 
-    bool empty() const noexcept {
+    const T* data() const {
+        return arr_;
+    }
+
+    bool empty() const {
         return (size_ == 0);
     }
 
-    size_t size() const noexcept {
+    size_t size() const {
         return size_;
     }
 
-    size_t capacity() const noexcept {
+    size_t capacity() const {
         return cap_;
     }
 
@@ -248,7 +281,7 @@ public:
         cap_ = new_cap;
     }
 
-    void clear() noexcept {
+    void clear() {
         if (size_ == 0) {
             return;
         }
