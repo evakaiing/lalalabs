@@ -1,0 +1,21 @@
+Load A, overflow.txt;
+Load A, norm.txt
+Print A;
+Save A, out.txt;
+Rand B, 10, 1, 100;
+Concat A, B;
+Print A;
+Free B;
+Rand C, 20, 1, 100;
+Print C;
+Remove C, 2, 7;
+Print C;
+Copy A, 4, 10, C;
+Print A;
+Sort A+;
+Print A;
+Sort A-;
+Print A;
+Shuffle A;
+Print A;
+Stats A;

@@ -1,0 +1,5 @@
+b=20;
+zero=0;
+a=b/zero;
+
+print a;

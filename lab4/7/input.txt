@@ -1,0 +1,34 @@
+a=11;
+b=20;
+c=a+b;
+d=b-5;
+e=a*b;
+f=b/a;
+g=b%a;
+
+zero=0;
+k=b/zero;
+
+
+print a;
+print b;
+print c;
+print d;
+print e;
+print f;
+print g;
+
+h=c+10;
+i=e*d;
+
+print h;
+print i;
+
+a=100;
+b=a+50;
+
+print a;
+print b;
+print k;
+
+print;

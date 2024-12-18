@@ -1,0 +1,20 @@
+
+read(B, 2);
+read(C, 2);
+read(D, 2);
+read(E, 2);
+read(F, 2);
+read(G, 2);
+read(P, 2);
+read(Q, 2);
+
+{
+    meow meow
+    meow meow meow
+}
+A := B & C;
+B := D + E;
+C := F -> G;
+X := \B;
+
+write(X, 10);
