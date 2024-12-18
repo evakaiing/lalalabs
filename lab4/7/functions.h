@@ -7,7 +7,6 @@ typedef struct {
     int value;
 } MemoryCell;
 
-// Функции для работы с MemoryCell
 int compareMemoryCells(const void *a, const void *b);
 void sortMemoryCells(MemoryCell *cells, int count);
 MemoryCell* findMemoryCell(MemoryCell *cells, int count, char *name);

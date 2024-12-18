@@ -29,6 +29,5 @@ b=a+50;
 
 print a;
 print b;
-print k;
+print k; 
 
-print;

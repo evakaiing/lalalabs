@@ -102,14 +102,12 @@ return_code evaluateExpression(MemoryCell *cells, int count, char *expr, int* re
             case '*': value *= tmp; break;
             case '/':
                 if (tmp == 0) {
-                    printf("division by zero\n");
                     return DIVISION_BY_ZERO;
                 }
                 value /= tmp;
                 break;
             case '%':
                 if (tmp == 0) {
-                    printf("modulo by zero\n");
                     return DIVISION_BY_ZERO;
                 }
                 value %= tmp;
@@ -119,7 +117,7 @@ return_code evaluateExpression(MemoryCell *cells, int count, char *expr, int* re
         op = currentOp;
         ptr = nextPart + 1;
     }
-    
+
     *result = value;
     return OK;
 }
@@ -151,7 +149,8 @@ void executeLine(MemoryCell **cells, int *count, char *line) {
             if (cell) {
                 printf("%s = %d\n", cell->name, cell->value);
             } else {
-                printf("incorrect\n");
+                printf("undefined\n");
+                return;
             }
         } else {
             for (int i = 0; i < *count; i++) {
@@ -162,7 +161,12 @@ void executeLine(MemoryCell **cells, int *count, char *line) {
         lhs = strtok(line, "=");
         rhs = strtok(NULL, ";\n");
         if (strchr(rhs, '+') || strchr(rhs, '-') || strchr(rhs, '*') || strchr(rhs, '/') || strchr(rhs, '%')) {
-            int result = evaluateExpression(*cells, *count, rhs);
+            int result = 0;
+            return_code rc = evaluateExpression(*cells, *count, rhs, &result);
+            if (rc == DIVISION_BY_ZERO) {
+                printf("divisiob by zero\n");
+                return;
+            }
             addOrUpdateMemoryCell(cells, count, lhs, result);
         } else {
             addOrUpdateMemoryCell(cells, count, lhs, atoi(rhs));

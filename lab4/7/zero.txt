@@ -1,5 +1,5 @@
 b=20;
 zero=0;
 a=b/zero;
-
-print a;
+a=5;
+print b;
