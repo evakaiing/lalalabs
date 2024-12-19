@@ -110,65 +110,22 @@ void BuildingMaterial::displayInfo() const {
     Product::displayInfo();
     std::cout << "flammability: " << (flammability ? "1" : "0") << "\n";
 }
-
-Warehouse::~Warehouse() {
-    for (auto product : inventory) {
-        delete product;
-    }
-}
-
-void Warehouse::addProduct(Product* product) {
-    inventory.push_back(product);
+void Warehouse::addProduct(std::unique_ptr<Product> product) {
+    inventory.push_back(std::move(product));
 }
 
 void Warehouse::deleteProductById(unsigned int id) {
-    for (size_t i = 0; i < inventory.size(); ++i) {
-        if (inventory[i]->getId() == id) {
-            delete inventory[i]; 
-            inventory.erase(inventory.begin() + i); 
-            return; 
-        }
-    }
+    auto it = std::remove_if(inventory.begin(), inventory.end(), 
+                             [id](const std::unique_ptr<Product>& product) { return product->getId() == id; });
+    inventory.erase(it, inventory.end());
 }
-
 
 void Warehouse::displayInventory() const {
-    std::cout << "inventory:\n";
-
-    std::vector<Product*> perishableProducts;
-    std::vector<Product*> electronicProducts;
-    std::vector<Product*> buildingMaterials;
-
+    std::cout << "Inventory:\n";
     for (const auto& product : inventory) {
-        if (dynamic_cast<PerishableProduct*>(product)) {
-            perishableProducts.push_back(product);
-        } else if (dynamic_cast<ElectronicProduct*>(product)) {
-            electronicProducts.push_back(product);
-        } else if (dynamic_cast<BuildingMaterial*>(product)) {
-            buildingMaterials.push_back(product);
-        }
-    }
-
-    if (!perishableProducts.empty()) {
-        std::cout << "perishable products:\n";
-        for (const auto& product : perishableProducts) {
-            product->displayInfo();
-        }
-    }
-    if (!electronicProducts.empty()) {
-        std::cout << "electronic products:\n";
-        for (const auto& product : electronicProducts) {
-            product->displayInfo();
-        }
-    }
-    if (!buildingMaterials.empty()) {
-        std::cout << "building materials:\n";
-        for (const auto& product : buildingMaterials) {
-            product->displayInfo();
-        }
+        product->displayInfo();
     }
 }
-
 
 double Warehouse::calculateEntireCost() const {
     double totalCost = 0.0;
@@ -178,21 +135,8 @@ double Warehouse::calculateEntireCost() const {
     return totalCost;
 }
 
-std::vector<Product*> Warehouse::getProductsByCategory(const std::string& category) const {
-    std::vector<Product*> products;
-    for (const auto& product : inventory) {
-        if ((category == "Perishable" && dynamic_cast<PerishableProduct*>(product)) ||
-            (category == "Electronic" && dynamic_cast<ElectronicProduct*>(product)) ||
-            (category == "BuildingMaterial" && dynamic_cast<BuildingMaterial*>(product))) {
-            products.push_back(product);
-        }
-    }
-    return products;
-}
-
-
-Warehouse& Warehouse::operator+=(Product* product) {
-    addProduct(product);
+Warehouse& Warehouse::operator+=(std::unique_ptr<Product> product) {
+    addProduct(std::move(product));
     return *this;
 }
 
@@ -201,19 +145,17 @@ Warehouse& Warehouse::operator-=(unsigned int id) {
     return *this;
 }
 
-Product* Warehouse::operator[](unsigned int id) const {
-    for (const auto& product : inventory) {
+std::unique_ptr<Product>& Warehouse::operator[](unsigned int id) {
+    for (auto& product : inventory) {
         if (product->getId() == id) {
             return product;
         }
     }
-    return nullptr;
+    throw std::out_of_range("doesn't exist");
 }
 
 std::ostream& operator<<(std::ostream& os, const Warehouse& warehouse) {
-    os << "warehouse:\n";
-    for (const auto& product : warehouse.inventory) {
-        product->displayInfo();
-    }
+    os << "Warehouse contents:\n";
+    warehouse.displayInventory();
     return os;
 }

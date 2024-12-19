@@ -6,48 +6,42 @@
 int main() {
     Warehouse warehouse;
 
-    Product* milk = new PerishableProduct("Milk", 101, 1.0, 2.5, 7, "2024-12-10");
-    milk->displayInfo();
-    std::cout << "storage fee: " << milk->calculateStorageFee() << " per day\n\n";
-    Product* milk2 = new PerishableProduct("milk", 101, 1.0, 2.5, 7, "2024-11-25");
-    std::cout << "storage fee: " << milk2->calculateStorageFee() << " per day\n\n";
+    auto milk = std::make_unique<PerishableProduct>("Milk", 1, 1.0, 2.50, 10, "2024-01-15");
+    warehouse += std::move(milk);
 
-    Product* laptop = new ElectronicProduct("Laptop", 201, 2.5, 1500.0, 365, 24, 65.0);
-    std::cout << "electronic product:\n";
-    laptop->displayInfo();
-    std::cout << "storage fee: " << laptop->calculateStorageFee() << " per day\n\n";
+    auto tv = std::make_unique<ElectronicProduct>("TV", 2, 8.0, 799.99, 730, 24, 150);
+    warehouse += std::move(tv);
 
-    Product* bricks = new BuildingMaterial("Bricks", 301, 100.0, 500.0, 180, true);
-    std::cout << "building material:\n";
-    bricks->displayInfo();
-    std::cout << "storage fee: " << bricks->calculateStorageFee() << " per day\n\n";
-    Product* bricks2 = new BuildingMaterial("bricks", 301, 100.0, 500.0, 180, false);
-    std::cout << "storage fee: " << bricks2->calculateStorageFee() << " per day\n\n";
+    auto brick = std::make_unique<BuildingMaterial>("Brick", 3, 3.0, 0.50, 3650, true);
+    warehouse += std::move(brick);
 
-    warehouse += milk;
-    warehouse += laptop;
-    warehouse += bricks;
-
+    std::cout << "initial inventory status:" << std::endl;
     warehouse.displayInventory();
-    std::cout << '\n';
-    std::cout << warehouse;
-    std::cout << '\n';
-    Product* found = warehouse[101];
-    if (found) {
-        std::cout << "founded product: ";
-        found->displayInfo();
-    } else {
-        std::cout << "doesn't exist.\n";
+
+    std::cout << "total storage cost: " << warehouse.calculateEntireCost() << std::endl;
+
+    warehouse -= 2;
+    std::cout << "inventory after removing the TV:" << std::endl;
+    warehouse.displayInventory();
+
+    try {
+        auto& product = warehouse[1];
+        std::cout << "accessing milk by ID (1):" << std::endl;
+        product->displayInfo();
+    } catch (const std::out_of_range& e) {
+        std::cout << "error: " << e.what() << std::endl;
     }
 
-    warehouse -= 101;
+    std::cout << warehouse << std::endl;
 
-    std::cout << "after removing\n\n";
-    std::cout << warehouse;
-    std::cout << '\n';
-    std::vector<Product*> founded = warehouse.getProductsByCategory("Electronic");
-    for (const auto& elem : founded) {
-        elem->displayInfo();
+
+    std::vector<std::unique_ptr<Product>> products;
+    products.push_back(std::make_unique<PerishableProduct>("Milk", 1, 1.0, 2.50, 10, "2024-01-15"));
+    products.push_back(std::make_unique<ElectronicProduct>("TV", 2, 8.0, 799.99, 730, 24, 150));
+    products.push_back(std::make_unique<BuildingMaterial>("Brick", 3, 3.0, 0.50, 3650, true));
+
+    for (const auto& product : products) {
+        product->displayInfo();  
+        std::cout << "storage fee: " << product->calculateStorageFee() << "\n\n"; 
     }
-    std::cout << warehouse.calculateEntireCost() << '\n';
 }

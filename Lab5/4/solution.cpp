@@ -12,6 +12,19 @@ public:
     Complex(double real): re(real), im(0.0) {};
     Complex(double real, double imag): re(real), im(imag) {};
 
+    Complex operator=(const Complex& other) {
+        if (this == &other) {
+            return *this;
+        }
+
+        this->re = other.re;
+        this->im = other.im;
+
+        return *this;
+    }
+
+    Complex(const Complex& other): re(other.re), im(other.im) {};
+
     Complex& operator+=(const Complex& other) {
         this->re += other.re;
         this->im += other.im;

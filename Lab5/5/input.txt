@@ -1,0 +1,5 @@
+int (*func)(void (*)(int), char);
+char a;
+int b[10];
+float z();
+int (*arr)[5];

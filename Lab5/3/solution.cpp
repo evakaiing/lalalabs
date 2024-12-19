@@ -19,6 +19,8 @@ public:
         return *this;
     }
 
+    logical_values_array(const logical_values_array& other): value(other.value) {};
+
     unsigned int get_value() {
         return this->value;
     }
@@ -45,6 +47,10 @@ public:
 
     logical_values_array equivalence(const logical_values_array& other) {
         return logical_values_array((*this & other) | (!(*this) & !other));
+    }
+
+    static bool equals(logical_values_array& lhs, const logical_values_array& rhs) {
+        return lhs.equivalence(rhs).value == ~0; 
     }
     
     logical_values_array sheffer(const logical_values_array& other) {
@@ -113,4 +119,10 @@ int main () {
     std::cout << binary_representation << '\n';
     
     delete[] binary_representation;
+
+
+    logical_values_array a1(0b1011), b1(0b1011), c1(0b0111);
+    std::cout << "a == b: " << logical_values_array::equals(a1, b1) << '\n'; 
+    std::cout << "a == c: " << logical_values_array::equals(a1, c1) << '\n'; 
+
 }

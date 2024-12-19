@@ -6,8 +6,9 @@
 #include <string>
 #include <ctime>
 #include <algorithm>
+#include <memory>
 
-// Базовый класс Product
+
 class Product {
 public:
     Product(const std::string& name, unsigned int id, double weight, double price, unsigned int shelf_life);
@@ -29,7 +30,6 @@ protected:
     unsigned int shelf_life;
 };
 
-// Производный класс PerishableProduct
 class PerishableProduct : public Product {
 public:
     PerishableProduct(const std::string& name, unsigned int id, double weight, double price, unsigned int shelf_life, const std::string& expirationDate);
@@ -37,13 +37,13 @@ public:
     double calculateStorageFee() const override;
     void displayInfo() const override;
 
-    bool isExpiringSoon(int days) const; // Проверяет, истекает ли срок годности
+    bool isExpiringSoon(int days) const; 
 
 private:
     std::string expirationDate;
 };
 
-// Производный класс ElectronicProduct
+
 class ElectronicProduct : public Product {
 public:
     ElectronicProduct(const std::string& name, unsigned int id, double weight, double price, unsigned int shelf_life, unsigned int warrantyPeriod, double powerRating);
@@ -66,25 +66,23 @@ private:
     bool flammability;
 };
 
-// Класс Warehouse
-class Warehouse {
+
+class Warehouse final {
 private:
-    std::vector<Product*> inventory; // Вектор указателей на продукты
+    std::vector<std::unique_ptr<Product>> inventory;
 
 public:
-    ~Warehouse(); // Деструктор для очистки памяти
+    void addProduct(std::unique_ptr<Product> product); 
+    void deleteProductById(unsigned int id); 
+    void displayInventory() const; 
+    double calculateEntireCost() const; 
+    std::unique_ptr<Product> getProductsByCategory(const std::string& category) const;
 
-    void addProduct(Product* product); // Добавляет продукт в склад
-    void deleteProductById(unsigned int id); // Удаляет продукт по ID
-    void displayInventory() const; // Выводит все товары в складе
-    double calculateEntireCost() const; // Считает общую стоимость хранения
-    std::vector<Product*> getProductsByCategory(const std::string& category) const; // Возвращает товары по категории
+    Warehouse& operator+=(std::unique_ptr<Product> product);
+    Warehouse& operator-=(unsigned int id);
+    std::unique_ptr<Product>& operator[](unsigned int id); 
 
-    Warehouse& operator+=(Product* product); // Перегрузка оператора +=
-    Warehouse& operator-=(unsigned int id); // Перегрузка оператора -=
-    Product* operator[](unsigned int id) const; // Перегрузка оператора [] для поиска по ID
-
-    friend std::ostream& operator<<(std::ostream& os, const Warehouse& warehouse); // Перегрузка оператора вывода
+    friend std::ostream& operator<<(std::ostream& os, const Warehouse& warehouse);
 };
 
 #endif // WAREHOUSE_HPP

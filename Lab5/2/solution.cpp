@@ -82,7 +82,16 @@ public:
         initialize_s();
     }
 
+    encoder(const encoder& other): key(other.key) {};
+    encoder operator=(const encoder& other) {
+        if (this == &other) {
+            return *this;
+        }
 
+        this->key = other.key;
+
+        return *this;
+    }
     void encode(std::string path_to_input_file, std::string path_to_output_file, bool need_to_encrypt) {
         try {
             checkPaths(path_to_input_file, path_to_output_file);
@@ -117,6 +126,7 @@ int main() {
     std::vector<std::byte> key = {std::byte(0x1), std::byte(0x2), std::byte(0x3)};
     std::vector<std::byte> new_key = {std::byte(0x5), std::byte(0x2), std::byte(0x1)};
     encoder test(key);
+    encoder test_2(new_key);
     test.encode("text.txt", "encrypted.txt", true);
     test.encode("encrypted.txt", "decrypted.txt", false);
 
@@ -124,4 +134,5 @@ int main() {
 
     test.encode("text.txt", "encrypted2.txt", true);
     test.encode("encrypted2.txt", "decrypted2.txt", false);
+
 }

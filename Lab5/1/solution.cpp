@@ -3,8 +3,6 @@
 #include <climits>
 #include <cstdint>
 
-#define BITS 32
-
 class binary_int {
 private:
     int value = 0;
@@ -26,23 +24,10 @@ public:
     }
 
     binary_int& operator++() {
-        int carry = 1;
-        int temp = this->value;
-        while (carry) {
-            int new_carry = temp & carry;
-            temp = this->value ^ carry;
-            carry = new_carry << 1;
-        }
-
-        if ((this->value > 0 && temp < 0) || 
-            (this->value < 0 && temp > 0)) {
-            throw std::overflow_error("overflow in ++\n");
-        }
-        this->value = temp;
-        return *this;
+        return ++(*this);
     }
 
-    binary_int operator++(int) {
+    binary_int operator++(int) { // a++
         binary_int temp = *this;
         ++(*this);
         return temp;
@@ -118,7 +103,8 @@ public:
     this->value = result;
     return *this;
 }
-
+    binary_int a, b;
+    binary_int c = a + b;
     friend binary_int operator+(binary_int lhs, const binary_int& other) {
         lhs += other;
         return lhs;
@@ -160,7 +146,7 @@ public:
 
 
     friend std::ostream& operator<<(std::ostream& os, const binary_int& obj) {
-        os << std::bitset<BITS>(obj.value);
+        os << std::bitset<sizeof(int) * 8>(obj.value);
         return os;
     }
 
@@ -236,7 +222,7 @@ int main() {
     } catch (const std::overflow_error& e) {
         std::cout << e.what();
     }
-
+    a++++;
     // int min multiply check
     try {
         binary_int a(INT32_MIN);
