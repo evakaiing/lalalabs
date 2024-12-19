@@ -105,6 +105,7 @@ return_code readFile(RouteList* list, const char* filename) {
 
         if (stopTimeInUnix > leaveTimeInUnix) {
             printf("for vechile number %s stop time > leave time\n", vehicleNumber);
+            fclose(file);
             return INVALID_INPUT;
         }
 
